@@ -5,8 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 const Payment = () => {
     const location = useLocation();
-    const itemPrice = location.state && location.state.itemPrice;
-
+    const [itemPrice, setItemPrice] = useState(location.state && location.state.itemPrice);
     const [cardNumber, setCardNumber] = useState('');
     const [expiryDate, setExpiryDate] = useState('');
     const [cvv, setCvv] = useState('');
@@ -76,12 +75,14 @@ const Payment = () => {
     };
 
     const simulatePayment = () => {
-        // Burada gerçek bir ödeme simülasyonu yapılabilir, şu an sadece başarılı ödeme toast'u gösteriyoruz.
+        // Simulate payment success
         setTimeout(() => {
             toast.success('Ödeme başarıyla gerçekleştirildi.');
             setCardNumber('');
             setExpiryDate('');
             setCvv('');
+            // Update itemPrice to 0 after successful payment
+            setItemPrice(0);
         }, 2000);
     };
 
