@@ -10,11 +10,9 @@ const BmwCatagory = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const navgate = useNavigate()
+   
 
-    const detalbmw = () => {
-        navgate('/detalbmw')
-    }
+   
 
     useEffect(() => {
         AOS.init({ duration: 1000 });
@@ -63,7 +61,7 @@ const BmwCatagory = () => {
                             <h3 className="text-lg font-semibold mb-2">{note.title}</h3>
                             <p className="text-gray-600 mb-4">${note.price}</p>
                             <button
-                                onClick={detalbmw}
+                                onClick={() => navigate(`/product/${note._id}`)}
                                 className="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded"
                             >
                                 Details

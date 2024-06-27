@@ -45,14 +45,14 @@ const Sectioninstall = () => {
                             data-aos="fade-up"
                             className="flex flex-wrap justify-center items-center gap-4"
                         >
-                            <a href="https://play.google.com/store">
+                            <a target="_blank" href="https://play.google.com/store">
                                 <img
                                     src={PlayStoreImg}
                                     alt="Play Store"
                                     className="max-w-[150px] sm:max-w-[120px] md:max-w-[200px]"
                                 />
                             </a>
-                            <a href="https://www.apple.com/app-store/">
+                            <a target="_blank" href="https://www.apple.com/app-store/">
                                 <img
                                     src={AppStoreImg}
                                     alt="App Store"

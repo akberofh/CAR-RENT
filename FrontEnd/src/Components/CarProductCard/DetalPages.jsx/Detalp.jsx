@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import styles from './Detalp.module.scss';
 import { FaStar } from "react-icons/fa";
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProductCard from '../ProductCard';
-import { ToastContainer } from 'react-toastify'
 import Basket from '../../../Pages/Basket/Basket';
 
 const Detalp = () => {
@@ -16,6 +15,7 @@ const Detalp = () => {
     const [error, setError] = useState(null);
     const { note_id } = useParams();
     const { userInfo } = useSelector(state => state.auth);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -39,14 +39,20 @@ const Detalp = () => {
     }, [note_id]);
 
     const handleAddToBag = () => {
-        // Kullanıcı bilgilerini localStorage'den al
+        if (!userInfo) {
+            toast.warn('Sepete eklemek için kayıt olmalısınız.');
+            setTimeout(() => {
+                navigate('/register', { state: { from: window.location.pathname } });
+            }, 3000); // 3 saniye sonra yönlendirme
+            return;
+        }
+
         const storedUserInfo = localStorage.getItem('userInfo');
         let basketList = [];
 
         if (storedUserInfo) {
             const userInfoObject = JSON.parse(storedUserInfo);
 
-            // Sadece kullanıcının kendi eklediği ürünleri sakla
             const productToAdd = {
                 _id: userInfo._id,
                 id: note_id,
@@ -55,25 +61,20 @@ const Detalp = () => {
                 thumbnail: product.thumbnail
             };
 
-            // Eğer ürün zaten sepete eklenmişse ekleme
             if (localStorage.getItem('basketList')) {
                 basketList = JSON.parse(localStorage.getItem('basketList'));
                 const existingProduct = basketList.find(item => item.id === note_id);
                 if (!existingProduct) {
                     basketList.push(productToAdd);
-                    // Sepete eklendi bildirimi
                     toast.success(`${product.title} sepete eklendi!`);
                 } else {
-                    // Ürün zaten sepette bildirimi
                     toast.info(`${product.title} zaten sepette bulunmaktadır.`);
                 }
             } else {
                 basketList.push(productToAdd);
-                // Sepete eklendi bildirimi
                 toast.success(`${product.title} sepete eklendi!`);
             }
 
-            // Sepet listesini localStorage'e kaydedin
             localStorage.setItem('basketList', JSON.stringify(basketList));
         } else {
             console.log('Kullanıcı bilgisi bulunamadı. Giriş yapmalısınız.');
@@ -106,7 +107,6 @@ const Detalp = () => {
                         <FaStar />
                         <FaStar />
                         <FaStar />
-                        {/* <FaRegStarHalfStroke /> */}
                     </div>
                     <div className={styles.btns}>
                         <button onClick={handleAddToBag}>Sepete Ekle</button>
@@ -120,8 +120,8 @@ const Detalp = () => {
                     <ProductCard />
                 </div>
             </div>
-            <Basket userId={userInfo._id} />
-            <ToastContainer /> {/* Toastify bildirimleri için konteyner */}
+            {userInfo && <Basket userId={userInfo._id} />}
+            <ToastContainer />
         </div>
     );
 };

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styles from './Register.module.css';
 import { useRegisterMutation } from "../../Redux/Slice/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +18,7 @@ const Register = () => {
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const location = useLocation();
 
     const [register, { isLoading }] = useRegisterMutation();
 
@@ -25,9 +26,10 @@ const Register = () => {
 
     useEffect(() => {
         if (userInfo) {
-            navigate('/dashboard');
+            const { from } = location.state || { from: { pathname: "/" } };
+            navigate(from);
         }
-    }, [navigate, userInfo]);
+    }, [navigate, userInfo, location.state]);
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -47,7 +49,10 @@ const Register = () => {
 
             const res = await register(formData).unwrap();
             dispatch(setCredentials({ ...res }));
-            navigate('/dashboard');
+
+            // Kullanıcı bilgilerini güncelledikten sonra yönlendirme yapılmalı
+            const { from } = location.state || { from: { pathname: "/" } };
+            navigate(from);
         } catch (error) {
             toast.error('Registration failed');
         }
@@ -55,14 +60,14 @@ const Register = () => {
 
     const { getRootProps, getInputProps, isDragActive } = useDropzone({
         accept: 'image/*',
-        maxSize: 5242880, // 5 MB limit (adjust as per your server/API limits)
+        maxSize: 20971520, // 10 MB limit
         onDrop: (acceptedFiles) => {
             if (acceptedFiles.length > 0) {
                 const file = acceptedFiles[0];
-                if (file.size <= 5242880) { // Check if file size is within limit
+                if (file.size <= 20971520) { // Check if file size is within limit
                     setPhoto(file);
                 } else {
-                    toast.error('File size exceeds 5 MB limit');
+                    toast.error('File size exceeds 10 MB limit');
                 }
             }
         }
@@ -123,7 +128,7 @@ const Register = () => {
                             )}
                         </div>
                     </div>
-                    <button type="submit" disabled={isLoading}>
+                    <button onClick={handleRegister} type="submit" disabled={isLoading}>
                         {isLoading ? 'Creating User' : 'Register'}
                     </button>
                 </form>
