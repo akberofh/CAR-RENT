@@ -15,8 +15,8 @@ export const Navlinks = [
   },
   {
     id: 2,
-    name: "CHAT",
-    link: "/chat",
+    name: "BASKET",
+    link: "/basket",
   },
   {
     id: 2,

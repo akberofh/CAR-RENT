@@ -14,8 +14,9 @@ import LadaCatagory from '../Catagory/LadaCatagory'
 import NissanCatagory from '../Catagory/NissanCatagory'
 import ToyotaCatagory from '../Catagory/ToyotaCatagory'
 import MercedesCatagory from '../Catagory/MercedesCatagory'
-import Detalbmw from '../Catagory/Detailpage/Detalbmw'
 import AddNewTodo from '../Pages/AddTodo/AddNewTodo'
+import Detailpage from '../Components/CarProductCard/DetalPages.jsx/Detailpage'
+import Basket from '../Pages/Basket/Basket'
 
 const Router = () => {
   return (
@@ -25,7 +26,8 @@ const Router = () => {
     <Route path="/login" element={<Login />} />
     <Route path="/addtodo" element={<AddNewTodo/>} />
         <Route path="/register" element={<Register />} />
-        <Route path="/detalbmw" element={<Detalbmw />} />
+        <Route path="/basket" element={<Basket />} />
+        <Route path="/product/:note_id" element={<Detailpage />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/profile" element={<Profile/>} />
           <Route path="" element={<PrivateRoute/>}  />

@@ -40,7 +40,7 @@ const Dashboard = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <button onClick={() => navigate('/profile')} className={styles.profileButton}>Go to Profile</button>
-        <button onClick={() => navigate('/add-new-todo')} className={styles.addButton}>Add new TODO task</button>
+        <button onClick={() => navigate('/addtodo')} className={styles.addButton}>Add new TODO task</button>
       </div>
       <div className={styles.todoList}>
         {isLoading && <p>Loading...</p>}

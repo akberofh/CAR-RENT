@@ -6,9 +6,7 @@ import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 import { EffectCoverflow, Pagination } from 'swiper/modules';
 import './style.css';
-import { FaHeart } from 'react-icons/fa';
 import { useSelector } from "react-redux";
-
 const ProductCard = () => {
   const [notes, setNotes] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
@@ -26,47 +24,8 @@ const ProductCard = () => {
     fetchNotes();
   }, []);
 
-  const addToBasket = async (id) => {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      console.error('Kullanıcı oturum açmamış');
-      return;
-    }
 
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/api/todos/${id}`,
-        { user_id: userInfo.id }, // Kullanıcı kimlik bilgisini ekliyoruz
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      console.log(`Sepete eklendi: ${id}`, response.data.userTodo);
-    } catch (error) {
-      console.error('Sepete eklerken hata oluştu:', error);
-    }
-  };
 
-  const addToWishlist = async (id) => {
-    try {
-      console.log(`Favorilere eklendi: ${id}`);
-      setNotes(notes.filter((note) => note._id !== id));
-
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('Kullanıcı oturum açmamış');
-        return;
-      }
-
-      const response = await axios.post(
-        `http://localhost:8000/api/todos/${id}`, // Todos API'si için uygun endpoint
-        { user_id: userInfo.id }, // Ürün kimlik bilgisini ve kullanıcı kimlik bilgisini ekliyoruz
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      console.log('Todos API\'sine başarıyla eklendi:', response.data);
-    } catch (error) {
-      console.error('Todos API\'sine eklerken hata oluştu:', error);
-    }
-  };
 
   return (
     <Swiper
@@ -97,12 +56,6 @@ const ProductCard = () => {
                   style={{ backgroundColor: 'transparent' }}
                 />
               )}
-              <button
-                onClick={() => addToBasket(note._id)}
-                className="bg-primary text-white py-2 px-4 rounded-md absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition duration-300 hover:bg-primary-dark"
-              >
-                Sepete Ekle
-              </button>
             </div>
             <div className="space-y-2 w-full text-center mt-3">
               <h1 className="text-primary dark:text-primary-light font-semibold text-lg">{note.title}</h1>
@@ -114,12 +67,8 @@ const ProductCard = () => {
             <p className="text-xl font-semibold absolute top-0 left-3 bg-white dark:bg-gray-800 px-2 py-1 rounded-lg shadow-lg text-gray-900 dark:text-gray-100">
               {note.distance}
             </p>
-            <button
-              onClick={() => addToWishlist(note._id)}
-              className="group opacity-0 hover:opacity-100 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-600 transition duration-300 absolute top-2 right-2"
-            >
-              <FaHeart size="1.5em" />
-            </button>
+          
+
           </div>
         </SwiperSlide>
       ))}
