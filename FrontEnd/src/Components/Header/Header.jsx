@@ -8,11 +8,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export const Navlinks = [
-  {
-    id: 2,
-    name: "ADDTODO",
-    link: "/addtodo",
-  },
+ 
   {
     id: 2,
     name: "BASKET",
@@ -27,11 +23,6 @@ export const Navlinks = [
     id: 2,
     name: "LOGIN",
     link: "/login",
-  },
-  {
-    id: 2,
-    name: "REGISTER",
-    link: "/register",
   },
   {
     id: 1,

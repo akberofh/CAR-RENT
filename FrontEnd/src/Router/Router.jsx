@@ -17,6 +17,7 @@ import MercedesCatagory from '../Catagory/MercedesCatagory'
 import AddNewTodo from '../Pages/AddTodo/AddNewTodo'
 import Detailpage from '../Components/CarProductCard/DetalPages.jsx/Detailpage'
 import Basket from '../Pages/Basket/Basket'
+import Payment from '../Pages/Basket/Payment'
 
 const Router = () => {
   return (
@@ -27,6 +28,7 @@ const Router = () => {
     <Route path="/addtodo" element={<AddNewTodo/>} />
         <Route path="/register" element={<Register />} />
         <Route path="/basket" element={<Basket />} />
+        <Route path="/basket/payment" element={<Payment />} />
         <Route path="/product/:note_id" element={<Detailpage />} />
         <Route path="/dashboard" element={<Dashboard/>}/>
           <Route path="/profile" element={<Profile/>} />

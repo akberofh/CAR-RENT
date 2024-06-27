@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from './Basket.module.scss';
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Sepet listesi bileşeni
 const Basket = () => {
     const [basketItems, setBasketItems] = useState([]);
     const { userInfo } = useSelector((state) => state.auth);
+    const navigate = useNavigate();
 
     useEffect(() => {
         // localStorage'den sepet listesini alın
@@ -76,6 +78,11 @@ const Basket = () => {
 
     // Kullanıcının sepet listesini _id'ye göre filtrele
     const filteredBasketItems = basketItems.filter(item => item._id === userInfo._id);
+   
+
+    const handlePayment = (itemPrice) => {
+        navigate('/basket/payment', { state: { itemPrice } });
+    };
 
     return (
         <div className={styles.basketList}>
@@ -91,6 +98,7 @@ const Basket = () => {
                             <button onClick={() => handleIncreaseQuantity(item.id)}>Arttır</button>
                             {item.count === 1 && <button onClick={() => handleDecreaseQuantity(item.id)}>Sil</button>}
                             {item.count > 1 && <button onClick={() => handleDecreaseQuantity(item.id)}>Azalt</button>}
+                            <button onClick={() => handlePayment(item.price)}>Ödeme yap</button>
                         </div>
                     </li>
                 ))}
